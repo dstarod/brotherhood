@@ -1,0 +1,40 @@
+body{
+    padding-bottom: 20px;
+}
+
+/* Monospace font for song texts */
+.song_body, #id_body{
+    font-family: 'PT Mono', monospace;
+}
+
+/* A4 (210/297) Aspect ratio: 1.4142857142857144 */
+@media (max-width: 1280px) {
+    #pdf_view{
+        height: 1810px;
+    }
+}
+@media (max-width: 1024px) {
+    #pdf_view{
+        height: 1448px;
+    }
+}
+@media (max-width: 800px) {
+    #pdf_view{
+        height: 1131px;
+    }
+}
+@media (max-width: 640px) {
+    #pdf_view{
+        height: 905px;
+    }
+}
+@media (max-width: 320px) {
+    #pdf_view{
+        height: 452px;
+    }
+}
+
+.chord{
+    color: red;
+    font-weight: bold;
+}

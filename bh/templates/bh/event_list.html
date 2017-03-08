@@ -1,0 +1,14 @@
+{% extends "bh/main.html" %}
+
+{% block events %}active{% endblock %}
+
+{% block content %}
+    <h3>События</h3>
+	<div class="list-group">
+		{% for event in events.all %}
+			<a class="list-group-item" href="{% url 'bh:event' pk=event.pk %}">
+				{{ event.started_at }}: {{ event.name }}
+			</a>
+		{% endfor %}
+	</div>
+{% endblock %}

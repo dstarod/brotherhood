@@ -1,0 +1,21 @@
+{% extends "bh/main.html" %}
+
+{% block address %}active{% endblock %}
+
+{% block content %}
+
+    <h4>{{ address }}</h4>
+	{% if address.people.count %}
+        По этому адресу проживают:
+        <ul>
+            {% for person in address.people.all %}
+                <li><a href="{% url 'bh:person' pk=person.pk %}">{{ person }}</a></li>
+            {% endfor %}
+        </ul>
+	{% endif %}
+
+    {% if address.lat and address.lng %}
+        {% include 'bh/map.html' with address=address addreses=addresses %}
+    {% endif %}
+
+{% endblock %}

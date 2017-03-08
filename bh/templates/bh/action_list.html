@@ -1,0 +1,13 @@
+{% extends "bh/main.html" %}
+
+{% block actions %}active{% endblock %}
+
+{% block content %}
+
+    <h3>Активности</h3>
+	<div class="list-group">
+		{% for action in actions.all %}
+			<a class="list-group-item" href="{% url 'bh:action' pk=action.pk %}">{{ action }}</a>
+		{% endfor %}
+	</div>
+{% endblock %}

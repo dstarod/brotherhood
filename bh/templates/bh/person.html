@@ -1,0 +1,134 @@
+{% extends "bh/main.html" %}
+
+{% block people %}active{% endblock %}
+
+{% block content %}
+    <div class="panel {% if person.gone_to_eternity %}panel-success{% elif person.gone_to_another_church %}panel-warning{% elif person.gone %}panel-danger{% else %}panel-default{% endif %}">
+        <div class="panel-heading">
+            <h4>
+                {{ person }}
+                {% if person.gone_to_eternity %}
+                    ({% if person.gender == 'm' %}Отошел{% else %}Отошла{% endif %}
+                    в вечность)
+                {% elif person.gone_to_another_church %}
+                    ({% if person.gender == 'm' %}Перешел{% else %}Перешла{% endif %}
+                    в другую церковь)
+                {% elif person.gone %}
+                    ({% if person.gender == 'm' %}Ушел{% else %}Ушла{% endif %}
+                    из церкви)
+                {% endif %}
+            </h4>
+        </div>
+        <div class="panel-body">
+            {% if person.image %}
+            <div class="col-md-2">
+                {% if person.image %}
+                    <a href="{{ person.image.url }}" target="_blank">
+                        <img class="img-thumbnail" src="{{ person.image.url }}" alt="" width="100">
+                    </a>
+                {% endif %}
+            </div>
+            {% endif %}
+            <div {% if person.image %}class="col-md-10"{% endif %}>
+
+                <h4>
+                    {% if person.member %}Член церкви.{% endif %}
+                    {% if person.baptized %}
+                        Крещен{% if person.gender == 'f' %}а{% endif %}{% if  person.baptized_at %} {{ person.baptized_at }}{% endif %}.
+                    {% endif %}
+                </h4>
+
+                {% if person.birthday %}
+                    <h4>День рождения: {{ person.birthday }} ({{ person.birthday|timesince }})</h4>
+                {% endif %}
+
+                {% if person.address %}
+                    <h4>Место жительства:
+                        <a href="{% url 'bh:address' pk=person.address.pk %}">{{ person.address }}</a>
+                    </h4>
+                {% endif %}
+
+                {% if person.status %}
+                    <p>
+                        <a href="{% url 'bh:status' pk=person.status %}">{{ person.get_status_display }}</a>
+                    </p>
+                {% endif %}
+
+                {# Род занятий #}
+                {% if person.occupation %}
+                    <p>Род занятий: {{ person.occupation }}</p>
+                {% endif %}
+
+                {# Образование, специальность #}
+                {% if person.specialty %}
+                    <p>Образование, специальность: {{ person.specialty }}</p>
+                {% endif %}
+
+                {% if person.email.count or person.social.count or person.phone.count %}
+                    Контакты:
+                    <ul>
+                        {% for e in person.email.all %}
+                            <li>e-mail: <a href="mailto:{{ e.address }}">{{ e.address }}</a></li>
+                        {% endfor %}
+                        {% for s in person.social.all %}
+                            <li>{{ s.get_name_display }}: <a href="{{ s.link }}">{{ s.link }}</a></li>
+                        {% endfor %}
+                        {% for s in person.phone.all %}
+                            <li>{{ s.get_type_display }}: {{ s.number }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                {% if person.relations.count %}
+                    Семья:
+                    <ul>
+                        {% for r in person.relations.all %}
+                            <li><a href="{% url 'bh:person' pk=r.rel.id %}">{{ r.get_type_display }}: {{ r.rel }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                {% if person.skills.count %}
+                    Навыки:
+                    <ul>
+                        {% for skill in person.skills.all %}
+                            <li><a href="{% url 'bh:skill' pk=skill.pk %}">{{ skill }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                {% if person.actions.count %}
+                    Активности:
+                    <ul>
+                        {% for action_role in person.actions.all %}
+                            <li>
+                                <a href="{% url 'bh:action' pk=action_role.action.pk %}">
+                                    {{ action_role.action.name }}
+                                </a>
+                                {% if action_role.role %}
+                                    ({{ action_role.role|lower }})
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                {% if person.events.count %}
+                    События:
+                    <ul>
+                        {% for event in person.events.all %}
+                            <li>
+                                <a href="{% url 'bh:event' pk=event.pk %}">
+                                    {{ event.started_at }}: {{ event.name }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

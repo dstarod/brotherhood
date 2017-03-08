@@ -1,0 +1,40 @@
+{% extends "bh/main.html" %}
+
+{% block events %}active{% endblock %}
+
+{% block content %}
+	<h3>{{ event.name }} ({{ event.get_type_display|lower }} событие)</h3>
+	<h4>{{ event.started_at }} - {{ event.finished_at }}</h4>
+	<div class="list-group">
+		{% for p in event.people.all %}
+            <a class="list-group-item" href="{% url 'bh:person' pk=p.pk %}">{{ p }}</a>
+		{% endfor %}
+	</div>
+
+	{% if event.place %}<h4>Место: {{ event.place.name }}</h4>{% endif %}
+
+	{% if event.place and event.place.lat and event.place.lng %}
+		<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+		<div id="map" style="width: 600px; height: 400px; border:1px solid #ccc; padding:5px;"></div>
+		<script type="text/javascript">
+			ymaps.ready(init);
+			var myMap;
+			function init(){
+				myMap = new ymaps.Map("map", {
+					center: [{{ event.place.lat|safe }}, {{ event.place.lng|safe }}],
+					zoom: 12
+				});
+				myPlacemark = new ymaps.Placemark(
+					[{{ event.place.lat|safe }}, {{ event.place.lng|safe }}],
+					{
+						balloonContentHeader: "{{ event.place.name }}",
+						balloonContentBody: "{{ event.place.description }}"
+					}
+				);
+				myMap.geoObjects.add(myPlacemark);
+				myPlacemark.balloon.open();
+			}
+		</script>
+	{% endif %}
+
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "bh/main.html" %}
+
+{% block periods %}active{% endblock %}
+
+{% block content %}
+    <h3>Добровольцы</h3>
+    <div class="list-group">
+    {% for period in periods %}
+        <a class="list-group-item" href="{% url 'bh:person' pk=period.person.pk %}">{{ period }}: {{ period.person }}</a>
+    {% endfor %}
+    </div>
+{% endblock %}

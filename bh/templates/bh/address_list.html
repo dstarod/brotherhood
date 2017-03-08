@@ -1,0 +1,14 @@
+{% extends "bh/main.html" %}
+
+{% block address %}active{% endblock %}
+
+{% block content %}
+    <h3>Адреса</h3>
+    <div class="list-group">
+    {% for address in addresses %}
+        <a class="list-group-item" href="{% url 'bh:address' pk=address.pk %}">{{ address }}</a>
+    {% endfor %}
+    </div>
+
+    {% include 'bh/map.html' with address=addresses|first addresses=addresses %}
+{% endblock %}

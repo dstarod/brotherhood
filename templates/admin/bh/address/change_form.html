@@ -1,0 +1,61 @@
+{% extends "admin/change_form.html" %}
+{% load i18n admin_urls %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+{% endblock %}
+
+{% block extrastyle %}{{ block.super }}{% endblock %}
+
+{% block after_related_objects %}
+    {{ block.super }}
+    <div id="map" style="height: 600px; border:1px solid #ccc; padding:5px;"></div>
+{% endblock %}
+
+{% block admin_change_form_document_ready %}
+	<script type="text/javascript">
+		ymaps.ready(init);
+		var myMap;
+		function init(){
+			myMap = new ymaps.Map("map", {
+				center: [55.76, 37.64],
+				zoom: 12
+			});
+
+			{% if form.lat.data %}
+				myPlacemark = new ymaps.Placemark([{{ form.lat.data }}, {{ form.lng.data }}]);
+				myMap.geoObjects.add(myPlacemark);
+				myMap.setCenter([{{ form.lat.data }}, {{ form.lng.data }}], 12);
+			{% else %}
+				ymaps.geolocation.get({
+					// Выставляем опцию для определения положения по ip
+					provider: 'yandex',
+					// Карта автоматически отцентрируется по положению пользователя.
+					mapStateAutoApply: true
+				}).then(function (result) {
+					myMap.geoObjects.add(result.geoObjects);
+				});
+			{% endif %}
+
+			myMap.events.add('click', function (e) {
+				var coords = e.get('coords');
+                document.getElementById('id_lng').value = coords[1];
+                document.getElementById('id_lat').value = coords[0];
+				myMap.geoObjects.removeAll();
+				myPlacemark = new ymaps.Placemark(coords);
+				myMap.geoObjects.add(myPlacemark);
+
+				var point = ymaps.geocode(coords);
+				point.then(function(res){
+					var point_obj = res.geoObjects.get(0).properties._data;
+                    document.getElementById('id_name').value = point_obj.name;
+                    document.getElementById('id_description').value = point_obj.description;
+                    document.getElementById('id_text').value = point_obj.text;
+					//var point_bounds = point_obj.boundedBy;
+					//var point_zoom = myMap.getZoom();
+				});
+			});
+		}
+	</script>
+{% endblock %}

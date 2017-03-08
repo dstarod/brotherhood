@@ -1,0 +1,14 @@
+{% extends "bh/main.html" %}
+
+{% block people %}active{% endblock %}
+
+{% block content %}
+    <h3>Люди</h3>
+    <div class="list-group">
+    {% for person in people %}
+        <a class="list-group-item" href="{% url 'bh:person' pk=person.id %}">
+            {{ person }}
+        </a>
+    {% endfor %}
+    </div>
+{% endblock %}

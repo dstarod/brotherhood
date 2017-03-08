@@ -1,0 +1,32 @@
+<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+<div id="map" style="height: 600px; border:1px solid #ccc; padding:5px;"></div>
+<script type="text/javascript">
+    ymaps.ready(init);
+    var myMap;
+    function init(){
+        myMap = new ymaps.Map("map", {
+            center: [{{ address.lat|safe }}, {{ address.lng|safe }}],
+            zoom: 12
+        });
+        myPlacemark = new ymaps.Placemark(
+            [{{ address.lat|safe }}, {{ address.lng|safe }}],
+            {
+                balloonContentHeader: "{{ address.name }}",
+                balloonContentBody: "{{ address.description }}"
+            }
+        );
+        myMap.geoObjects.add(myPlacemark);
+        myPlacemark.balloon.open();
+
+        {% for address in addresses %}
+            myPlacemark = new ymaps.Placemark(
+                [{{ address.lat|safe }}, {{ address.lng|safe }}],
+                {
+                    balloonContentHeader: "<a href='{% url 'bh:address' pk=address.pk %}'>{{ address.name }}</a>",
+                    balloonContentBody: "<a href='{% url 'bh:address' pk=address.pk %}'>{{ address.description }}</a>"
+                }
+            );
+            myMap.geoObjects.add(myPlacemark);
+        {% endfor %}
+    }
+</script>

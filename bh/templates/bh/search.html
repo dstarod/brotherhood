@@ -1,0 +1,50 @@
+{% extends "bh/main.html" %}
+
+{% block questions %}active{% endblock %}
+
+{% block content %}
+
+{#	<h3>Вопросы и ответы</h3>#}
+{#    <div class="list-group">#}
+{#        <a class="list-group-item" href="#">Самые активные члены церкви</a>#}
+{#        <a class="list-group-item" href="#">Ближайшие персональные праздники: дни рождения, годовщины свадьбы, крещения и т.п.</a>#}
+{#    </div>#}
+
+    <h3>Поиск</h3>
+
+    <form action="" method="post" class="form">
+        {% csrf_token %}
+        <div class="form-group">
+            {% load bootstrap %}
+            {{ form|bootstrap }}
+        </div>
+        <div class="form-group text-center">
+            <input type="submit" value="Искать" class="btn btn-success"/>
+        </div>
+    </form>
+
+    {% if people %}
+        <h4>Результат</h4>
+        <div class="list-group">
+        {% for person in people.all %}
+            <a class="list-group-item" href="{% url 'bh:person' pk=person.pk %}">
+                {{ person }}{% if person.birthday %}, {{ person.birthday }}, {{ person.birthday|timesince }}{% endif %}
+            </a>
+        {% endfor %}
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                E-mail
+            </div>
+            <div class="panel-body">
+                {% for person in people.all %}
+                    {% for e in person.email.all %}
+                        <a href="mailto:{{ e.address }}">{{ e.address }}</a>{% if not forloop.last or not forloop.parentloop.last %}, {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}

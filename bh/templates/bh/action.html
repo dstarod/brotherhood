@@ -1,0 +1,14 @@
+{% extends "bh/main.html" %}
+
+{% block actions %}active{% endblock %}
+
+{% block content %}
+    <h3>{{ action.name }}</h3>
+	<div class="list-group">
+		{% for role in action.roles.all %}
+			<a class="list-group-item" href="{% url 'bh:person' pk=role.person.pk %}">
+                {{ role.person }} {% if role.role %}({{ role.role }}){% endif %}
+            </a>
+		{% endfor %}
+	</div>
+{% endblock %}
