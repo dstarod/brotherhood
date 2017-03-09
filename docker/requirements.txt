@@ -1,0 +1,6 @@
+psycopg2
+django
+gunicorn
+Pillow
+django-resized
+django-bootstrap-form
