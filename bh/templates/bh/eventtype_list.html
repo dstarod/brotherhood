@@ -1,0 +1,17 @@
+{% extends "bh/main.html" %}
+
+{% block events %}active{% endblock %}
+
+{% block content %}
+    <h3>Типы событий</h3>
+    <div class="list-group">
+        {% for event_type in event_types %}
+            <a class="list-group-item" href="{% url 'bh:event_type' pk=event_type.pk %}">
+                {{ event_type.name }}
+            </a>
+        {% endfor %}
+        <a class="list-group-item" href="{% url 'bh:event_type' pk=0 %}">
+            Без типа
+        </a>
+    </div>
+{% endblock %}

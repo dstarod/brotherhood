@@ -80,12 +80,26 @@ class ActionList(generic.ListView):
         return models.Action.objects.all()
 
 
-class EventList(generic.ListView):
-    context_object_name = 'events'
-    model = models.Event
+class EventCategoryList(generic.ListView):
+    context_object_name = 'event_types'
+    model = models.EventType
 
     def get_queryset(self):
-        return models.Event.objects.all()
+        return models.EventType.objects.order_by('name').all()
+
+
+def event_type(request, pk):
+    event_type_title = 'Без группы'
+    if int(pk):
+        e = models.Event.objects.filter(event_type=pk)
+        title = models.EventType.objects.get(pk=pk)
+        event_type_title = title.name
+    else:
+        e = models.Event.objects.filter(event_type=None)
+    return render(
+        request, template_name='bh/event_list.html',
+        context={'events': e, 'title': event_type_title}
+    )
 
 
 def status_list(request):
