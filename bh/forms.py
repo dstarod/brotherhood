@@ -3,6 +3,11 @@ from .models import STATUS_CHOICES, EventType, Skill
 
 
 class ExtendedSearch(forms.Form):
+
+    full_name = forms.CharField(
+        label='Фамилия, имя, отчество',
+        widget=forms.TextInput(attrs={'placeholder': 'Фамилия, имя, отчество'})
+    )
     baptized = forms.ChoiceField(
         choices=((2, 'Не важно'), (1, 'Да'), (0, 'Нет')),
         label='Крещен'

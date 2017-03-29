@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.views import generic
+from django.db.models import Q
+
 from . import models
 from .models import STATUS_CHOICES
 from .forms import ExtendedSearch
@@ -134,6 +136,14 @@ def search(request):
         form = ExtendedSearch(request.POST)
         if form.is_valid():
             p = models.Person.objects
+
+            full_name = str(form.cleaned_data.get('full_name'))
+            if full_name:
+                p = p.filter(
+                    Q(last_name__icontains=full_name)
+                    | Q(first_name__icontains=full_name)
+                    | Q(middle_name__icontains=full_name)
+                )
 
             baptized = int(form.cleaned_data.get('baptized'))
             if baptized <= 1:
