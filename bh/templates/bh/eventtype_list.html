@@ -4,14 +4,22 @@
 
 {% block content %}
     <h3>Типы событий</h3>
-    <div class="list-group">
+    <div class="">
         {% for event_type in event_types %}
-            <a class="list-group-item" href="{% url 'bh:event_type' pk=event_type.pk %}">
-                {{ event_type.name }}
-            </a>
+            <div class="panel panel-default col-md-6">
+                <div class="panel-body">
+                    <a class="btn btn-success col-md-12" href="{% url 'bh:event_type' pk=event_type.pk %}">
+                        {{ event_type.name }}
+                    </a>
+                </div>
+            </div>
         {% endfor %}
-        <a class="list-group-item" href="{% url 'bh:event_type' pk=0 %}">
-            Без типа
-        </a>
+        <div class="panel panel-default col-md-6">
+            <div class="panel-body">
+                <a class="btn btn-success col-md-12" href="{% url 'bh:event_type' pk=0 %}">
+                    Без типа
+                </a>
+            </div>
+        </div>
     </div>
 {% endblock %}
