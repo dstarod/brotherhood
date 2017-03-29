@@ -1,10 +1,10 @@
 import os
 from .private import (
-    DEBUG, SECRET_KEY, DB_NAME, DB_HOST, DB_PASS, DB_PORT, DB_USER
+    DEBUG, SECRET_KEY, DB_NAME, DB_HOST, DB_PASS, DB_PORT, DB_USER, SERVER
 )
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', SERVER]
 
 # Application definition
 
