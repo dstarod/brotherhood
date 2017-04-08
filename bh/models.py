@@ -67,6 +67,15 @@ STATUS_CHOICES = (
     (5, 'ДВР')
 )
 
+CIRCLE_CHOICES = (
+    (0, 'Общество'),
+    (1, 'Собрание'),
+    (2, 'Община'),
+    (3, 'Ученики'),
+    (4, 'Служители'),
+    (5, 'Посланники'),
+)
+
 
 class Person(models.Model):
     first_name = models.CharField(
@@ -132,6 +141,10 @@ class Person(models.Model):
     status = models.SmallIntegerField(
         null=True, blank=True, choices=STATUS_CHOICES,
         verbose_name='Статус'
+    )
+    circle = models.SmallIntegerField(
+        null=True, blank=True, choices=CIRCLE_CHOICES,
+        verbose_name='Круг посвящения',
     )
     image = ResizedImageField(
         upload_to=user_directory_path, null=True, blank=True, default=None,
