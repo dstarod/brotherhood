@@ -45,6 +45,14 @@ class ExtendedSearch(forms.Form):
         label='Статус'
     )
 
+    circles = list(CIRCLE_CHOICES)
+    circles.insert(0, (1000, 'Не важно'))
+
+    circle = forms.ChoiceField(
+        choices=circles,
+        label='Круг посвящения'
+    )
+
     event_presents = forms.ModelMultipleChoiceField(
         queryset=EventType.objects.all(),
         label='Посетил(а) события (все выбранные)',

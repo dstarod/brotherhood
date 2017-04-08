@@ -165,6 +165,10 @@ def search(request):
             if status_int < 1000:
                 p = p.filter(status=status_int)
 
+            circle_int = int(form.cleaned_data.get('circle'))
+            if circle_int < 1000:
+                p = p.filter(circle=circle_int)
+
             show_gone_to_eternity = form.cleaned_data.get('gone_to_eternity')
             if not show_gone_to_eternity:
                 p = p.filter(gone_to_eternity=False)
