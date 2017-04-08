@@ -1,12 +1,19 @@
 from django import forms
-from .models import STATUS_CHOICES, EventType, Skill
+
+from .models import (
+    STATUS_CHOICES,
+    EventType,
+    Skill,
+    CIRCLE_CHOICES,
+)
 
 
 class ExtendedSearch(forms.Form):
 
     full_name = forms.CharField(
         label='Фамилия, имя, отчество',
-        widget=forms.TextInput(attrs={'placeholder': 'Фамилия, имя, отчество'})
+        widget=forms.TextInput(attrs={'placeholder': 'Фамилия, имя, отчество'}),
+        required=False,
     )
     baptized = forms.ChoiceField(
         choices=((2, 'Не важно'), (1, 'Да'), (0, 'Нет')),
