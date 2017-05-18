@@ -7,11 +7,37 @@
 	<h4>{{ event.started_at }} - {{ event.finished_at }}</h4>
 	<div class="list-group">
 		{% for p in event.people.all %}
-            <a class="list-group-item" href="{% url 'bh:person' pk=p.pk %}">{{ p }}</a>
+            <a class="list-group-item" href="{% url 'bh:person' pk=p.pk %}">
+                {{ p }}
+                {% if p.phone.count %}
+                    ({% for e in p.phone.all %}{{ e.number }}{% if not forloop.last %}, {% endif %}{% endfor %})
+                {% endif %}
+            </a>
 		{% endfor %}
 	</div>
 
-	{% if event.place %}<h4>Место: {{ event.place.name }}</h4>{% endif %}
+    <div>
+        <h4>E-mails:</h4>
+        {% for p in event.people.all %}
+            {% for e in p.email.all %}
+                <a href="mailto:{{ e.address }}">{{ e.address }}</a>
+            {% endfor %}
+        {% endfor %}
+    </div>
+
+    <div>
+        <h4>Мобильные телефоны:</h4>
+        {% for p in event.people.all %}
+            {% for phone in p.phone.all %}
+                {% if phone.type == 'cell' %}
+                    {{ phone.number }}
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    </div>
+
+
+    {% if event.place %}<h4>Место: {{ event.place.name }}</h4>{% endif %}
 
 	{% if event.place and event.place.lat and event.place.lng %}
 		<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
