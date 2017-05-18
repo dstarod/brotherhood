@@ -89,7 +89,7 @@ class ActionAdmin(admin.ModelAdmin):
 
 class EventAdmin(admin.ModelAdmin):
     search_fields = ['name']
-    list_display = ('name', 'event_type')
+    list_display = ('name', 'event_type', 'started_at', 'finished_at')
 
 
 class AddressAdmin(admin.ModelAdmin):
