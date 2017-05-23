@@ -3,7 +3,12 @@
 {% block events %}active{% endblock %}
 
 {% block content %}
-	<h3>{{ event.name }} ({{ event.get_type_display|lower }} событие)</h3>
+	<h3>
+        {{ event.name }} ({{ event.get_type_display|lower }} событие)
+        {% if user.is_superuser %}
+            <a href="{% url 'admin:bh_event_change' event.pk %}">Edit</a>
+        {% endif %}
+    </h3>
 	<h4>{{ event.started_at }} - {{ event.finished_at }}</h4>
 	<div class="list-group">
 		{% for p in event.people.all %}

@@ -7,6 +7,9 @@
         <div class="panel-heading">
             <h4>
                 {{ person }}
+                {% if user.is_superuser %}
+                    <a href="{% url 'admin:bh_person_change' person.pk %}">Edit</a>
+                {% endif %}
                 {% if person.gone_to_eternity %}
                     ({% if person.gender == 'm' %}Отошел{% else %}Отошла{% endif %}
                     в вечность)
