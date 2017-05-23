@@ -412,6 +412,12 @@ class Action(models.Model):
         verbose_name='Название'
     )
 
+    action_type = models.ForeignKey(
+        'ActionType', on_delete=models.CASCADE, related_name='actions',
+        null=True, blank=True,
+        verbose_name='Тип активности'
+    )
+
     def __str__(self):
         return self.name
 
@@ -419,6 +425,20 @@ class Action(models.Model):
         verbose_name = 'Активность'
         verbose_name_plural = 'Активности'
         ordering = ['name']
+
+
+class ActionType(models.Model):
+    name = models.CharField(
+        null=False, blank=False, max_length=256,
+        verbose_name='Наименование'
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Тип активности'
+        verbose_name_plural = 'Типы активностей'
 
 
 class ActionRole(models.Model):
