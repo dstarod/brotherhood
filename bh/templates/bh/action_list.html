@@ -4,7 +4,7 @@
 
 {% block content %}
 
-    <h3>Активности</h3>
+    <h3>Активности категории "{{ title }}"</h3>
 	<div class="list-group">
 		{% for action in actions.all %}
 			<a class="list-group-item" href="{% url 'bh:action' pk=action.pk %}">{{ action }}</a>

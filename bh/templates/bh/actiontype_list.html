@@ -1,0 +1,25 @@
+{% extends "bh/main.html" %}
+
+{% block actions %}active{% endblock %}
+
+{% block content %}
+    <h3>Категории активностей</h3>
+    <div class="">
+        {% for action_type in action_types %}
+            <div class="panel panel-default col-md-6">
+                <div class="panel-body">
+                    <a class="btn btn-success col-md-12" href="{% url 'bh:action_type' pk=action_type.pk %}">
+                        {{ action_type.name }}
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="panel panel-default col-md-6">
+            <div class="panel-body">
+                <a class="btn btn-success col-md-12" href="{% url 'bh:action_type' pk=0 %}">
+                    Без типа
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

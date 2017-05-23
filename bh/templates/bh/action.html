@@ -3,7 +3,7 @@
 {% block actions %}active{% endblock %}
 
 {% block content %}
-    <h3>{{ action.name }}</h3>
+    <h3>{{ action.name }} {% if action.action_type %}({{ action.action_type.name }}){% endif %}</h3>
 	<div class="list-group">
 		{% for role in action.roles.all %}
 			<a class="list-group-item" href="{% url 'bh:person' pk=role.person.pk %}">

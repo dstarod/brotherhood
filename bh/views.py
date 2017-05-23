@@ -74,6 +74,28 @@ class SkillList(generic.ListView):
         return models.Skill.objects.order_by('name')
 
 
+class ActionCategoryList(generic.ListView):
+    context_object_name = 'action_types'
+    model = models.ActionType
+
+    def get_queryset(self):
+        return models.ActionType.objects.order_by('name').all()
+
+
+def action_type(request, pk):
+    action_type_title = 'Без типа'
+    if int(pk):
+        e = models.Action.objects.filter(action_type=pk)
+        title = models.ActionType.objects.get(pk=pk)
+        action_type_title = title.name
+    else:
+        e = models.Action.objects.filter(action_type=None)
+    return render(
+        request, template_name='bh/action_list.html',
+        context={'actions': e, 'title': action_type_title}
+    )
+
+
 class ActionList(generic.ListView):
     context_object_name = 'actions'
     model = models.Action
