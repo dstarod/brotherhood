@@ -24,7 +24,7 @@
     </form>
 
     {% if people %}
-        <h4>Результат</h4>
+        <h4>Результат ({{ people.count }}):</h4>
         <div class="list-group">
         {% for person in people.all %}
             <a class="list-group-item" href="{% url 'bh:person' pk=person.pk %}">
