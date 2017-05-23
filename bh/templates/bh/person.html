@@ -126,6 +126,11 @@
                     </ul>
                 {% endif %}
 
+                {% if person.description %}
+                    <h4>Примечания:</h4>
+                    <p>{{ person.description }}</p>
+                {% endif %}
+
             </div>
 
         </div>
