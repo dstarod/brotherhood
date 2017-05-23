@@ -179,6 +179,16 @@ def search(request):
             if married <= 1:
                 p = p.filter(married=bool(married))
 
+            in_small_group = int(form.cleaned_data.get('in_small_group'))
+            if in_small_group <= 1:
+                pp = set()
+                for a in models.Action.objects.filter(action_type=1).all():
+                    pp.update([role.person.id for role in a.roles.all()])
+                if in_small_group == 1:
+                    p = p.exclude(pk__in=list(pp))
+                elif in_small_group == 0:
+                    p = p.filter(pk__in=list(pp))
+
             gender = form.cleaned_data.get('gender')
             if gender in ('m', 'f'):
                 p = p.filter(gender=gender)

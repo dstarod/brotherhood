@@ -31,6 +31,10 @@ class ExtendedSearch(forms.Form):
         choices=((2, 'Не важно'), (0, 'Не в браке'), (1, 'В браке')),
         label='Женат/замужем'
     )
+    in_small_group = forms.ChoiceField(
+        choices=((2, 'Не важно'), (0, 'Посещает'), (1, 'Не посещает')),
+        label='Посещение малой группы'
+    )
     gone_to_eternity = forms.BooleanField(
         label='Отображать отошедших в вечность',
         required=False,
