@@ -17,6 +17,10 @@
         <div class="form-group">
             {% load bootstrap %}
             {{ form|bootstrap }}
+{#            {% load bootstrap_filters %}#}
+{#            {% for item in form %}#}
+{#                {{ item|bootstrap|safe }}#}
+{#            {% endfor %}#}
         </div>
         <div class="form-group text-center">
             <input type="submit" value="Искать" class="btn btn-success"/>
