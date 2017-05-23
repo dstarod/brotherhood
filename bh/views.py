@@ -113,7 +113,7 @@ class EventCategoryList(generic.ListView):
 
 
 def event_type(request, pk):
-    event_type_title = 'Без группы'
+    event_type_title = 'Без типа'
     if int(pk):
         e = models.Event.objects.filter(event_type=pk)
         title = models.EventType.objects.get(pk=pk)
