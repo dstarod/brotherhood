@@ -104,6 +104,11 @@ class PhoneAdmin(admin.ModelAdmin):
     search_fields = ['number']
 
 
+class PhotoAdmin(admin.ModelAdmin):
+    list_display = ('name', 'image_tag')
+    readonly_fields = ('image_tag',)
+
+
 admin.site.register(models.Person, PersonAdmin)
 admin.site.register(models.Event, EventAdmin)
 admin.site.register(models.Address, AddressAdmin)
@@ -113,3 +118,5 @@ admin.site.register(models.Phone, PhoneAdmin)
 admin.site.register(models.Skill)
 admin.site.register(models.Period, PeriodAdmin)
 admin.site.register(models.EventType)
+admin.site.register(models.Gallery)
+admin.site.register(models.Photo, PhotoAdmin)

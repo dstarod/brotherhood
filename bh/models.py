@@ -1,9 +1,12 @@
 import os
+import time
+from hashlib import md5
 
 from django.db import models
 from django_resized import ResizedImageField
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.utils.safestring import mark_safe
 
 
 DOW_CHOICES = (
@@ -12,14 +15,85 @@ DOW_CHOICES = (
 )
 
 
+def hash_name(base):
+    """
+    :type base: str
+    :rtype: str
+    """
+    return md5(base.encode('utf-8')).hexdigest()
+
+
 def user_directory_path(instance, filename):
-    # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
+    """
+    Returns url like /media/avatars/ad688b26ba3876751699c540e0e23ede.jpeg
+    :type instance: Person
+    :type filename: str
+    :rtype: str
+    """
     ext = filename.split('.')[-1].lower()
-    path = 'avatars/{}.{}'.format(instance.pk, ext)
+    path = 'avatars/{}.{}'.format(hash_name(str(instance)), ext)
     os_path = os.path.join(settings.MEDIA_ROOT, path)
     if os.path.isfile(os_path):
         os.remove(os_path)
     return path
+
+
+def photo_path(instance, filename):
+    ext = filename.split('.')[-1].lower()
+    dir_path = 'gallery_{}'.format(instance.gallery.pk)
+    os_dir_path = os.path.join(settings.MEDIA_ROOT, dir_path)
+    if os.path.exists(dir_path) and not os.path.isdir(os_dir_path):
+        os.remove(dir_path)
+    if not os.path.isdir(os_dir_path):
+        os.mkdir(os_dir_path, 0o777)
+
+    file_path = os.path.join(
+        dir_path, '{}.{}'.format(hash_name(str(time.time())), ext)
+    )
+    os_path = os.path.join(settings.MEDIA_ROOT, file_path)
+    if os.path.isfile(os_path):
+        os.remove(os_path)
+    return file_path
+
+
+class Gallery(models.Model):
+    name = models.CharField(
+        null=False, blank=False, max_length=256,
+        verbose_name='Название'
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Галерея'
+        verbose_name_plural = 'Галереи'
+
+
+class Photo(models.Model):
+    name = models.CharField(
+        null=False, blank=False, max_length=256,
+        verbose_name='Название'
+    )
+    image = ResizedImageField(
+        upload_to=photo_path, null=False, blank=False,
+        verbose_name='Фото', size=(1200, 1200),
+    )
+    gallery = models.ForeignKey(
+        Gallery, on_delete=models.CASCADE, null=False, blank=False,
+        verbose_name='Галерея', related_name='photos'
+    )
+
+    def image_tag(self):
+        return mark_safe('<img src="{}" width=100 height=100 />'.format(self.image.url))
+    image_tag.short_description = 'Изображение'
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Фотография'
+        verbose_name_plural = 'Фотографии'
 
 
 class Address(models.Model):
@@ -505,6 +579,10 @@ class Event(models.Model):
         'EventType', on_delete=models.CASCADE, related_name='events',
         null=True, blank=True,
         verbose_name='Тип события'
+    )
+    gallery = models.ForeignKey(
+        Gallery, on_delete=models.SET_NULL, null=True, blank=True,
+        verbose_name='Галерея', related_name='events'
     )
 
     def __str__(self):
