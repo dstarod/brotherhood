@@ -3,7 +3,12 @@
 {% block actions %}active{% endblock %}
 
 {% block content %}
-    <h3>{{ action.name }} {% if action.action_type %}({{ action.action_type.name }}){% endif %}</h3>
+    <h3>
+        {{ action.name }} {% if action.action_type %}({{ action.action_type.name }}){% endif %}
+        {% if user.is_superuser %}
+            <a href="{% url 'admin:bh_action_change' action.pk %}">Edit</a>
+        {% endif %}
+    </h3>
 	<div class="list-group">
 		{% for role in action.roles.all %}
 			<a class="list-group-item" href="{% url 'bh:person' pk=role.person.pk %}">
