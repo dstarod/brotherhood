@@ -485,7 +485,14 @@ class Action(models.Model):
         null=False, blank=False, unique=True, max_length=256,
         verbose_name='Название'
     )
-
+    periods = models.ManyToManyField(
+        'Period',  blank=True,  related_name='actions',
+        verbose_name='Периоды',
+    )
+    address = models.ForeignKey(
+        'Address', null=True, blank=True, related_name='Активности',
+        verbose_name='Адрес'
+    )
     action_type = models.ForeignKey(
         'ActionType', on_delete=models.CASCADE, related_name='actions',
         null=True, blank=True,

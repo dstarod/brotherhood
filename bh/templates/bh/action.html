@@ -16,4 +16,42 @@
             </a>
 		{% endfor %}
 	</div>
+
+    {% if action.periods.count %}
+        <div>
+            <h4>Время проведения:</h4>
+            <ul>
+                {% for period in action.periods.all %}
+                    <li>{{ period }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    {% if action.address %}<h4>Место: {{ action.address.name }}</h4>{% endif %}
+
+    {% if action.address and action.address.lat and action.address.lng %}
+        <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+        <div id="map" style="width: 600px; height: 400px; border:1px solid #ccc; padding:5px;"></div>
+        <script type="text/javascript">
+            ymaps.ready(init);
+            var myMap;
+            function init(){
+                myMap = new ymaps.Map("map", {
+                    center: [{{ action.address.lat|safe }}, {{ action.address.lng|safe }}],
+                    zoom: 12
+                });
+                myPlacemark = new ymaps.Placemark(
+                    [{{ action.address.lat|safe }}, {{ action.address.lng|safe }}],
+                    {
+                        balloonContentHeader: "{{ action.address.name }}",
+                        balloonContentBody: "{{ action.address.description }}"
+                    }
+                );
+                myMap.geoObjects.add(myPlacemark);
+                myPlacemark.balloon.open();
+            }
+        </script>
+    {% endif %}
+
 {% endblock %}
