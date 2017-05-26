@@ -498,6 +498,10 @@ class Action(models.Model):
         null=True, blank=True,
         verbose_name='Тип активности'
     )
+    description = models.TextField(
+        null=True, blank=True,
+        verbose_name='Примечания'
+    )
 
     def __str__(self):
         return self.name

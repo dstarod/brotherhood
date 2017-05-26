@@ -9,6 +9,13 @@
             <a href="{% url 'admin:bh_action_change' action.pk %}">Edit</a>
         {% endif %}
     </h3>
+
+    {% if action.description %}
+        <p>
+            <i>{{ action.description }}</i>
+        </p>
+    {% endif %}
+
 	<div class="list-group">
 		{% for role in action.roles.all %}
 			<a class="list-group-item" href="{% url 'bh:person' pk=role.person.pk %}">
