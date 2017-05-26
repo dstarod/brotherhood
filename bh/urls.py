@@ -35,8 +35,6 @@ urlpatterns = [
         login_required(views.status_list), name='statuses'),
     url(r'^status/(?P<pk>[0-9]+)/$',
         login_required(views.status), name='status'),
-    url(r'^period/list/$',
-        login_required(views.PeriodList.as_view()), name='periods'),
     url(r'^search/$',
         login_required(views.search), name='search'),
 ]

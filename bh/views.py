@@ -142,14 +142,6 @@ def status(request, pk):
     )
 
 
-class PeriodList(generic.ListView):
-    context_object_name = 'periods'
-    model = models.Period
-
-    def get_queryset(self):
-        return models.Period.objects.order_by('dow', 'time_from', 'time_to')
-
-
 def search(request):
     form = ExtendedSearch()
     p = None
