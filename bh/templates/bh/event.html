@@ -48,9 +48,9 @@
     </div>
 
 
-    {% if event.place %}<h4>Место: {{ event.place.name }}</h4>{% endif %}
+    {% if event.address %}<h4>Место: {{ event.address.name }}</h4>{% endif %}
 
-	{% if event.place and event.place.lat and event.place.lng %}
+	{% if event.address and event.address.lat and event.address.lng %}
 		<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
 		<div id="map" style="width: 600px; height: 400px; border:1px solid #ccc; padding:5px;"></div>
 		<script type="text/javascript">
@@ -58,14 +58,14 @@
 			var myMap;
 			function init(){
 				myMap = new ymaps.Map("map", {
-					center: [{{ event.place.lat|safe }}, {{ event.place.lng|safe }}],
+					center: [{{ event.address.lat|safe }}, {{ event.address.lng|safe }}],
 					zoom: 12
 				});
 				myPlacemark = new ymaps.Placemark(
-					[{{ event.place.lat|safe }}, {{ event.place.lng|safe }}],
+					[{{ event.address.lat|safe }}, {{ event.address.lng|safe }}],
 					{
-						balloonContentHeader: "{{ event.place.name }}",
-						balloonContentBody: "{{ event.place.description }}"
+						balloonContentHeader: "{{ event.address.name }}",
+						balloonContentBody: "{{ event.address.description }}"
 					}
 				);
 				myMap.geoObjects.add(myPlacemark);
