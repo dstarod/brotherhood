@@ -526,13 +526,33 @@ class ActionType(models.Model):
         verbose_name_plural = 'Типы активностей'
 
 
+class Role(models.Model):
+    name = models.CharField(
+        null=False, blank=False, max_length=256,
+        verbose_name='Название'
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Роль'
+        verbose_name_plural = 'Роли'
+
+
 class ActionRole(models.Model):
     """
     Участие в активности и опционально - роль в ней.
     Например, малая группа - лидер.
     """
+    # TODO Remove it
     role = models.CharField(
         null=True, blank=True, max_length=256,
+        verbose_name='Роль (устаревшее)'
+    )
+    charge = models.ForeignKey(
+        'Role', on_delete=models.CASCADE, related_name='action_roles',
+        null=True, blank=True,
         verbose_name='Роль'
     )
     action = models.ForeignKey(

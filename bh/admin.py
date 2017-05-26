@@ -109,6 +109,10 @@ class PhotoAdmin(admin.ModelAdmin):
     readonly_fields = ('image_tag',)
 
 
+class RoleAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+
+
 admin.site.register(models.Person, PersonAdmin)
 admin.site.register(models.Event, EventAdmin)
 admin.site.register(models.Address, AddressAdmin)
@@ -119,4 +123,5 @@ admin.site.register(models.Skill)
 admin.site.register(models.Period, PeriodAdmin)
 admin.site.register(models.EventType)
 admin.site.register(models.Gallery)
+admin.site.register(models.Role, RoleAdmin)
 admin.site.register(models.Photo, PhotoAdmin)
