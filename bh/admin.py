@@ -97,7 +97,7 @@ class AddressAdmin(admin.ModelAdmin):
 
 
 class PeriodAdmin(admin.ModelAdmin):
-    list_display = ('person', 'dow', 'time_from', 'time_to')
+    list_display = ('dow', 'time_from', 'time_to')
 
 
 class PhoneAdmin(admin.ModelAdmin):

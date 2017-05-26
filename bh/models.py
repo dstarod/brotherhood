@@ -629,10 +629,6 @@ class Period(models.Model):
         null=False, blank=False,
         verbose_name='Завершение'
     )
-    person = models.ForeignKey(
-        'Person', on_delete=models.CASCADE, related_name='periods',
-        verbose_name='Профиль'
-    )
 
     def __str__(self):
         return '{} с {} по {}'.format(
