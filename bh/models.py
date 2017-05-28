@@ -244,6 +244,10 @@ class Person(models.Model):
         null=False, blank=False, default=False,
         verbose_name='Перешел в другую церковь'
     )
+    staff = models.ForeignKey(
+        'Staff', on_delete=models.SET_NULL, null=True, blank=True,
+        verbose_name='Должность в церкви', related_name='people'
+    )
 
     def clean(self):
         if self.baptized_at and not self.baptized:
@@ -524,6 +528,20 @@ class ActionType(models.Model):
     class Meta:
         verbose_name = 'Тип активности'
         verbose_name_plural = 'Типы активностей'
+
+
+class Staff(models.Model):
+    name = models.CharField(
+        null=False, blank=False, max_length=256,
+        verbose_name='Должность в церкви'
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Должность в церкви'
+        verbose_name_plural = 'Должности в церкви'
 
 
 class Role(models.Model):

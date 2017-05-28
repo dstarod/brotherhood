@@ -35,6 +35,9 @@
             <div {% if person.image %}class="col-md-10"{% endif %}>
 
                 <h4>
+                    {% if person.staff %}
+                        Должность в церкви: {{ person.staff|lower }}.
+                    {% endif %}
                     {% if person.member %}Член церкви.{% endif %}
                     {% if person.baptized %}
                         Крещен{% if person.gender == 'f' %}а{% endif %}{% if  person.baptized_at %} {{ person.baptized_at }}{% endif %}.
