@@ -3,6 +3,7 @@ from django import forms
 from .models import (
     STATUS_CHOICES,
     EventType,
+    Staff,
     Skill,
     CIRCLE_CHOICES,
 )
@@ -22,6 +23,12 @@ class ExtendedSearch(forms.Form):
     member = forms.ChoiceField(
         choices=((2, 'Не важно'), (1, 'Да'), (0, 'Нет')),
         label='Член церкви'
+    )
+    choices = [(s.id, s.name) for s in Staff.objects.all()]
+    choices.insert(0, (1000, 'Не важно'))
+    staff = forms.ChoiceField(
+        choices=choices,
+        label='Должность в церкви',
     )
     gender = forms.ChoiceField(
         choices=(('o', 'Не важно'), ('m', 'Мужской'), ('f', 'Женский')),
