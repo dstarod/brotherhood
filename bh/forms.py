@@ -4,6 +4,7 @@ from .models import (
     STATUS_CHOICES,
     EventType,
     Staff,
+    Role,
     Skill,
     CIRCLE_CHOICES,
 )
@@ -29,6 +30,12 @@ class ExtendedSearch(forms.Form):
     staff = forms.ChoiceField(
         choices=choices,
         label='Должность в церкви',
+    )
+    choices = [(s.id, s.name) for s in Role.objects.all()]
+    choices.insert(0, (1000, 'Не важно'))
+    role = forms.ChoiceField(
+        choices=choices,
+        label='Служение/роль в активностях',
     )
     gender = forms.ChoiceField(
         choices=(('o', 'Не важно'), ('m', 'Мужской'), ('f', 'Женский')),

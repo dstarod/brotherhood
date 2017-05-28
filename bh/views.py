@@ -197,6 +197,14 @@ def search(request):
             if staff_int < 1000:
                 p = p.filter(staff=staff_int)
 
+            role_int = int(form.cleaned_data.get('role'))
+            if role_int < 1000:
+                peoples = set()
+                for e in models.ActionRole.objects.filter(charge=role_int).all():
+                    peoples.add(e.person.id)
+                print(peoples)
+                p = p.filter(pk__in=list(peoples))
+
             show_gone_to_eternity = form.cleaned_data.get('gone_to_eternity')
             if not show_gone_to_eternity:
                 p = p.filter(gone_to_eternity=False)
