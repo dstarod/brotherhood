@@ -99,6 +99,12 @@ class AddressAdmin(admin.ModelAdmin):
 class PeriodAdmin(admin.ModelAdmin):
     list_display = ('dow', 'time_from', 'time_to')
 
+    def has_change_permission(self, request, obj=None):
+        # Disable delete period ability
+        if obj is not None:
+            return False
+        return super(PeriodAdmin, self).has_change_permission(request, obj=obj)
+
 
 class PhoneAdmin(admin.ModelAdmin):
     search_fields = ['number']
