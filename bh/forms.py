@@ -25,18 +25,10 @@ class ExtendedSearch(forms.Form):
         choices=((2, 'Не важно'), (1, 'Да'), (0, 'Нет')),
         label='Член церкви'
     )
-    choices = [(s.id, s.name) for s in Staff.objects.all()]
-    choices.insert(0, (1000, 'Не важно'))
-    staff = forms.ChoiceField(
-        choices=choices,
-        label='Должность в церкви',
-    )
-    choices = [(s.id, s.name) for s in Role.objects.all()]
-    choices.insert(0, (1000, 'Не важно'))
-    role = forms.ChoiceField(
-        choices=choices,
-        label='Служение/роль в активностях',
-    )
+    staff = forms.ChoiceField(choices=[], label='Должность в церкви')
+
+    role = forms.ChoiceField(choices=[], label='Служение/роль в активностях')
+
     gender = forms.ChoiceField(
         choices=(('o', 'Не важно'), ('m', 'Мужской'), ('f', 'Женский')),
         label='Пол'
@@ -103,3 +95,8 @@ class ExtendedSearch(forms.Form):
         choices=((0, 'Не важно'), (1, 'Возраст'),),
         label='Сортировка'
     )
+
+    def __init__(self, *args, **kwargs):
+        super(ExtendedSearch, self).__init__(*args, **kwargs)
+        self.fields['staff'].choices = Staff.make_choices()
+        self.fields['role'].choices = Role.make_choices()

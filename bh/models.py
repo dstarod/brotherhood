@@ -539,6 +539,12 @@ class Staff(models.Model):
     def __str__(self):
         return self.name
 
+    @classmethod
+    def make_choices(cls):
+        choices = [(s.id, s.name) for s in cls.objects.all()]
+        choices.insert(0, (1000, 'Не важно'))
+        return choices
+
     class Meta:
         verbose_name = 'Должность в церкви'
         verbose_name_plural = 'Должности в церкви'
@@ -552,6 +558,12 @@ class Role(models.Model):
 
     def __str__(self):
         return self.name
+
+    @classmethod
+    def make_choices(cls):
+        choices = [(s.id, s.name) for s in cls.objects.all()]
+        choices.insert(0, (1000, 'Не важно'))
+        return choices
 
     class Meta:
         verbose_name = 'Роль'
