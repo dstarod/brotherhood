@@ -1,7 +1,9 @@
-from django.shortcuts import render
-from django.shortcuts import get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from django.views import generic
 from django.db.models import Q
+from django.contrib.auth import (login as auth_login, authenticate)
+from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
 
 from . import models
 from .models import STATUS_CHOICES
@@ -10,6 +12,24 @@ from .forms import ExtendedSearch
 
 def index(request):
     return render(request, template_name='bh/index.html', context={})
+
+
+def login(request):
+    _message = ''
+    if request.method == 'POST':
+        _username = request.POST['username']
+        _password = request.POST['password']
+        user = authenticate(username=_username, password=_password)
+        if user is not None:
+            if user.is_active:
+                auth_login(request, user)
+                return HttpResponseRedirect(reverse('bh:index'))
+            else:
+                _message = 'Your account is not activated'
+        else:
+            _message = 'Invalid login, please try again.'
+    context = {'message': _message}
+    return render(request, 'bh/login.html', context)
 
 
 def people_list(request):

@@ -41,9 +41,9 @@
                     {% endif %}
                     <ul class="nav navbar-nav navbar-right">
                         {% if user.is_authenticated %}
-                            <li><a href="{% url 'admin:logout' %}">Logout</a></li>
+                            <li><a href="{% url 'admin:logout' %}?next=/">Logout</a></li>
                         {% else %}
-                            <li><a href="{% url 'admin:login' %}">Login</a></li>
+                            <li class="{% block login %}{% endblock %}"><a href="{% url 'bh:login' %}">Log in</a></li>
                         {% endif %}
                         {% if user.is_superuser %}
                             <li><a href="{% url 'admin:index' %}"><span class="glyphicon glyphicon-eye-open"></span></a></li>

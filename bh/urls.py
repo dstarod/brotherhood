@@ -5,6 +5,7 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
+    url(r'^login/$', views.login, name="login"),
     url(r'^skill/list/$',
         login_required(views.SkillList.as_view()), name='skills'),
     url(r'^skill/(?P<pk>[0-9]+)/$',
