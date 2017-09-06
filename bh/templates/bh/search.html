@@ -49,6 +49,22 @@
                 {% endfor %}
             </div>
         </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Мобильные телефоны
+            </div>
+            <div class="panel-body">
+                {% for person in people.all %}
+                    {% for p in person.phone.all %}
+                        {% if p.type == 'cell' %}
+                            <a href="tel:{{ p.number }}">{{ p.number }}</a>{% if not forloop.last or not forloop.parentloop.last %}, {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+
     {% endif %}
 
 {% endblock %}
