@@ -5,7 +5,7 @@ from django.db.models import Q
 
 from . import models
 from .models import STATUS_CHOICES
-from .forms import ExtendedSearch
+from .forms import ExtendedSearch, SimpleSearch
 
 
 def index(request):
@@ -13,9 +13,33 @@ def index(request):
 
 
 def people_list(request):
-    p = models.Person.objects.order_by('last_name', 'first_name')
+    p = models.Person.objects.filter(
+        gone_to_eternity=False,
+        gone_to_another_church=False,
+        gone=False,
+    )
+    form = SimpleSearch()
+
+    if request.method == 'POST':
+        form = SimpleSearch(request.POST)
+        p = models.Person.objects
+        if form.is_valid():
+
+            show_gone_to_eternity = form.cleaned_data.get('gone_to_eternity')
+            if not show_gone_to_eternity:
+                p = p.filter(gone_to_eternity=False)
+
+            show_gone_to_another_church = form.cleaned_data.get('gone_to_another_church')
+            if not show_gone_to_another_church:
+                p = p.filter(gone_to_another_church=False)
+
+            show_gone = form.cleaned_data.get('gone')
+            if not show_gone:
+                p = p.filter(gone=False)
+
     return render(request, template_name='bh/people.html', context={
-        'people': p
+        'people': p.order_by('last_name', 'first_name'),
+        'form': form,
     })
 
 

@@ -10,6 +10,21 @@ from .models import (
 )
 
 
+class SimpleSearch(forms.Form):
+    gone_to_eternity = forms.BooleanField(
+        label='Отображать отошедших в вечность',
+        required=False,
+    )
+    gone_to_another_church = forms.BooleanField(
+        label='Отображать перешедших в другую церковь',
+        required=False,
+    )
+    gone = forms.BooleanField(
+        label='Отображать ушедших из церкви',
+        required=False,
+    )
+
+
 class ExtendedSearch(forms.Form):
 
     full_name = forms.CharField(
