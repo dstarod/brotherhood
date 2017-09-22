@@ -1,0 +1,9 @@
+ENV
+migrations
+media
+pgdump
+__pycache__
+*.sublime-workspace
+*.sublime-project
+MEMO.md
+private.py
