@@ -2,8 +2,15 @@ ENV
 migrations
 media
 pgdump
+pgdata/
+common/
 __pycache__
+/docker/Dockerfile
+.idea/
+*.pyc
 *.sublime-workspace
 *.sublime-project
 MEMO.md
 private.py
+docker-compose.yml
+fabfile.py
