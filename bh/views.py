@@ -146,7 +146,7 @@ def event_type(request, pk):
         e = models.Event.objects.filter(event_type=None)
     return render(
         request, template_name='bh/event_list.html',
-        context={'events': e, 'title': event_type_title}
+        context={'events': e.order_by('-started_at'), 'title': event_type_title}
     )
 
 

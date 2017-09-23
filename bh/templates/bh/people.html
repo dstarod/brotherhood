@@ -16,11 +16,42 @@
         </div>
     </form>
 
-    <div class="list-group">
     {% for person in people %}
-        <a class="list-group-item" href="{% url 'bh:person' pk=person.id %}">
-            {{ person }}
-        </a>
+        <div class="col-md-4 col-sm-6 col-xs-12" style="padding: 10px;">
+
+            <div class="panel panel-default">
+
+                <div class="panel-heading">
+                    <a href="{% url 'bh:person' pk=person.id %}">
+                        {{ person }}
+                    </a>
+                </div>
+
+                <div class="panel-body">
+
+                    {% load staticfiles %}
+                    <div class='pull-left' style="box-shadow: 0 0 10px #ccc; width: 80px; height: 80px; padding: 5px; background: url({% static 'bh/img/noavatar.png' %}); background-position: center; background-size: cover; margin-right: 10px;">
+                        {% if person.image %}
+                            <div style="background: url({{ person.image.url }}); background-position: center; background-size: cover; width: 70px; height: 70px;"></div>
+                        {% endif %}
+                    </div>
+
+                    {% if person.status %}
+                        <p>{{ person.get_status_display }}</p>
+                    {% endif %}
+
+                    {% if person.phone.count %}
+                        <p>
+                            {% for p in person.phone.all %}
+                                <a href="tel:{{ p.number }}">{{ p.number }}</a>{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </p>
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
     {% endfor %}
-    </div>
 {% endblock %}
