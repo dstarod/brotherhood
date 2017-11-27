@@ -19,6 +19,7 @@
 	<div class="list-group">
 		{% for p in event.people.all %}
             <a class="list-group-item" href="{% url 'bh:person' pk=p.pk %}">
+                <div class="list-item-num">{{ forloop.counter }}</div>
                 {{ p }}
                 {% if p.phone.count %}
                     ({% for e in p.phone.all %}{{ e.number }}{% if not forloop.last %}, {% endif %}{% endfor %})

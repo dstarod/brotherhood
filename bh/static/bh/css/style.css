@@ -15,3 +15,9 @@
     width: 100px;
     height: 100px;
 }
+
+.list-item-num{
+    display: block;
+    float: left;
+    margin-right: 15px;
+}
