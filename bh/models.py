@@ -42,8 +42,8 @@ def photo_path(instance, filename):
     ext = filename.split('.')[-1].lower()
     dir_path = 'gallery_{}'.format(instance.gallery.pk)
     os_dir_path = os.path.join(settings.MEDIA_ROOT, dir_path)
-    if os.path.exists(dir_path) and not os.path.isdir(os_dir_path):
-        os.remove(dir_path)
+    if os.path.exists(os_dir_path) and not os.path.isdir(os_dir_path):
+        os.remove(os_dir_path)
     if not os.path.isdir(os_dir_path):
         os.mkdir(os_dir_path, 0o777)
 
