@@ -6,7 +6,6 @@ from .models import (
     Staff,
     Role,
     Skill,
-    CIRCLE_CHOICES,
 )
 
 
@@ -75,14 +74,6 @@ class ExtendedSearch(forms.Form):
     status = forms.ChoiceField(
         choices=statuses,
         label='Статус'
-    )
-
-    circles = list(CIRCLE_CHOICES)
-    circles.insert(0, (1000, 'Не важно'))
-
-    circle = forms.ChoiceField(
-        choices=circles,
-        label='Круг посвящения'
     )
 
     event_presents = forms.ModelMultipleChoiceField(
