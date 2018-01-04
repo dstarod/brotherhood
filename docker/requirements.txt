@@ -1,6 +1,6 @@
-psycopg2
-django
-gunicorn
-Pillow
-django-resized
-django-bootstrap-form
+psycopg2==2.7.3.2
+django==1.11.9
+gunicorn==19.7.1
+Pillow==5.0.0
+django-resized==0.3.8
+django-bootstrap-form==3.3
