@@ -1,7 +1,6 @@
 from django import forms
 
 from .models import (
-    STATUS_CHOICES,
     EventType,
     Staff,
     Role,
@@ -66,14 +65,6 @@ class ExtendedSearch(forms.Form):
     gone = forms.BooleanField(
         label='Отображать ушедших из церкви',
         required=False,
-    )
-
-    statuses = list(STATUS_CHOICES)
-    statuses.insert(0, (1000, 'Не важно'))
-
-    status = forms.ChoiceField(
-        choices=statuses,
-        label='Статус'
     )
 
     event_presents = forms.ModelMultipleChoiceField(

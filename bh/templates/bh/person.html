@@ -54,12 +54,6 @@
                     </h4>
                 {% endif %}
 
-                {% if person.status %}
-                    <p>
-                        <a href="{% url 'bh:status' pk=person.status %}">{{ person.get_status_display }}</a>
-                    </p>
-                {% endif %}
-
                 {# Род занятий #}
                 {% if person.occupation %}
                     <p>Род занятий: {{ person.occupation }}</p>

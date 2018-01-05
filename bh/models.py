@@ -132,16 +132,6 @@ class Address(models.Model):
         ordering = ['name']
 
 
-STATUS_CHOICES = (
-    (0, 'Сочувствующий'),
-    (1, 'Прихожанин'),
-    (2, 'Номинальный член церкви'),
-    (3, 'Пассивный член церкви'),
-    (4, 'Активный член церкви'),
-    (5, 'ДВР')
-)
-
-
 class Person(models.Model):
     first_name = models.CharField(
         null=False, blank=False, max_length=256,
@@ -202,10 +192,6 @@ class Person(models.Model):
     address = models.ForeignKey(
         'Address', on_delete=models.SET_NULL, null=True, blank=True,
         verbose_name='Адрес', related_name='people'
-    )
-    status = models.SmallIntegerField(
-        null=True, blank=True, choices=STATUS_CHOICES,
-        verbose_name='Статус'
     )
     image = ResizedImageField(
         upload_to=user_directory_path, null=True, blank=True, default=None,
