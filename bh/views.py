@@ -4,7 +4,6 @@ from django.views import generic
 from django.db.models import Q
 
 from . import models
-from .models import STATUS_CHOICES
 from .forms import ExtendedSearch, SimpleSearch
 
 
@@ -150,22 +149,6 @@ def event_type(request, pk):
     )
 
 
-def status_list(request):
-    return render(
-        request, template_name='bh/status_list.html',
-        context={'statuses': STATUS_CHOICES}
-    )
-
-
-def status(request, pk):
-    p = models.Person.objects.filter(status=pk)
-    s = STATUS_CHOICES[int(pk)]
-    return render(
-        request, template_name='bh/status_detail.html',
-        context={'people': p, 'status': s}
-    )
-
-
 def search(request):
     form = ExtendedSearch()
     p = None
@@ -208,14 +191,6 @@ def search(request):
             gender = form.cleaned_data.get('gender')
             if gender in ('m', 'f'):
                 p = p.filter(gender=gender)
-
-            status_int = int(form.cleaned_data.get('status'))
-            if status_int < 1000:
-                p = p.filter(status=status_int)
-
-            circle_int = int(form.cleaned_data.get('circle'))
-            if circle_int < 1000:
-                p = p.filter(circle=circle_int)
 
             staff_int = int(form.cleaned_data.get('staff'))
             if staff_int < 1000:

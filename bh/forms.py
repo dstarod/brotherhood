@@ -1,12 +1,10 @@
 from django import forms
 
 from .models import (
-    STATUS_CHOICES,
     EventType,
     Staff,
     Role,
     Skill,
-    CIRCLE_CHOICES,
 )
 
 
@@ -67,22 +65,6 @@ class ExtendedSearch(forms.Form):
     gone = forms.BooleanField(
         label='Отображать ушедших из церкви',
         required=False,
-    )
-
-    statuses = list(STATUS_CHOICES)
-    statuses.insert(0, (1000, 'Не важно'))
-
-    status = forms.ChoiceField(
-        choices=statuses,
-        label='Статус'
-    )
-
-    circles = list(CIRCLE_CHOICES)
-    circles.insert(0, (1000, 'Не важно'))
-
-    circle = forms.ChoiceField(
-        choices=circles,
-        label='Круг посвящения'
     )
 
     event_presents = forms.ModelMultipleChoiceField(
