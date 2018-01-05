@@ -31,10 +31,6 @@ urlpatterns = [
         login_required(views.people_list), name='people'),
     url(r'^person/(?P<pk>[0-9]+)/$',
         login_required(views.person), name='person'),
-    url(r'^status/list/$',
-        login_required(views.status_list), name='statuses'),
-    url(r'^status/(?P<pk>[0-9]+)/$',
-        login_required(views.status), name='status'),
     url(r'^search/$',
         login_required(views.search), name='search'),
 ]
