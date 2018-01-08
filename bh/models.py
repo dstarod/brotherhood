@@ -742,6 +742,10 @@ class EventType(models.Model):
         null=False, blank=False, max_length=256,
         verbose_name='Наименование'
     )
+    confirmation_document = models.ForeignKey(
+        'SignedDocument', on_delete=models.SET_NULL, null=True, blank=True,
+        verbose_name='Подтверждающий документ', related_name='event_types'
+    )
 
     def __str__(self):
         return self.name
