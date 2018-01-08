@@ -97,6 +97,20 @@
                     </ul>
                 {% endif %}
 
+                {% if person.signed_documents.count %}
+                    Подписанные документы:
+                    <ul>
+                        {% for document in person.signed_documents.all %}
+                            <li>
+                                {{ document }}
+                                {% if document.event_types.count %}
+                                    ({% for event_type in document.event_types.all %}{{ event_type }}{% endfor %})
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
                 {% if person.actions.count %}
                     Активности:
                     <ul>
