@@ -243,6 +243,10 @@ def search(request):
             if len(skills):
                 p = p.filter(skills__in=skills)
 
+            signed_documents = form.cleaned_data.get('signed_documents')
+            if len(signed_documents):
+                p = p.filter(signed_documents__in=signed_documents)
+
             sort = int(form.cleaned_data.get('sort'))
             if sort == 1:
                 p = p.order_by('-birthday')

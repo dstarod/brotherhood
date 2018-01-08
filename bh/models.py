@@ -132,6 +132,24 @@ class Address(models.Model):
         ordering = ['name']
 
 
+class SignedDocument(models.Model):
+    name = models.CharField(
+        null=False, blank=False, max_length=256,
+        verbose_name='Наименование'
+    )
+    description = models.TextField(
+        null=True, blank=True,
+        verbose_name='Описание'
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Подписанный документ'
+        verbose_name_plural = 'Подписанные документы'
+
+
 class Gender(object):
     male = 'm'
     female = 'f'
@@ -205,6 +223,10 @@ class Person(models.Model):
     skills = models.ManyToManyField(
         'Skill',  blank=True,  related_name='people',
         verbose_name='Дары и таланты',
+    )
+    signed_documents = models.ManyToManyField(
+        'SignedDocument', blank=True, related_name='people',
+        verbose_name='Подписанные документы',
     )
     member = models.BooleanField(
         null=False, blank=False, default=False,
