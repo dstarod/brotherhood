@@ -5,6 +5,7 @@ from .models import (
     Staff,
     Role,
     Skill,
+    SignedDocument,
 )
 
 
@@ -84,6 +85,13 @@ class ExtendedSearch(forms.Form):
     skills = forms.ModelMultipleChoiceField(
         queryset=Skill.objects.all(),
         label='Дары и таланты (любой из выбранных)',
+        widget=forms.SelectMultiple,
+        required=False
+    )
+
+    signed_documents = forms.ModelMultipleChoiceField(
+        queryset=SignedDocument.objects.all(),
+        label='Подписанные документы (любой из выбранных)',
         widget=forms.SelectMultiple,
         required=False
     )
