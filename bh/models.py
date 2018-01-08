@@ -132,6 +132,29 @@ class Address(models.Model):
         ordering = ['name']
 
 
+class SignedDocument(models.Model):
+    name = models.CharField(
+        null=False, blank=False, max_length=256,
+        verbose_name='Наименование'
+    )
+    description = models.TextField(
+        null=True, blank=True,
+        verbose_name='Описание'
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Подписанный документ'
+        verbose_name_plural = 'Подписанные документы'
+
+
+class Gender(object):
+    male = 'm'
+    female = 'f'
+
+
 class Person(models.Model):
     first_name = models.CharField(
         null=False, blank=False, max_length=256,
@@ -150,8 +173,8 @@ class Person(models.Model):
         verbose_name='Девичья фамилия'
     )
     gender = models.CharField(
-        choices=(('m', 'Мужской'), ('f', 'Женский')),
-        default='m', null=False, blank=False, max_length=256,
+        choices=((Gender.male, 'Мужской'), (Gender.female, 'Женский')),
+        default=Gender.male, null=False, blank=False, max_length=256,
         verbose_name='Пол'
     )
     created_at = models.DateTimeField(
@@ -200,6 +223,10 @@ class Person(models.Model):
     skills = models.ManyToManyField(
         'Skill',  blank=True,  related_name='people',
         verbose_name='Дары и таланты',
+    )
+    signed_documents = models.ManyToManyField(
+        'SignedDocument', blank=True, related_name='people',
+        verbose_name='Подписанные документы',
     )
     member = models.BooleanField(
         null=False, blank=False, default=False,
@@ -314,37 +341,66 @@ class Phone(models.Model):
         verbose_name_plural = 'Номера телефонов'
 
 
+class Rel(object):
+    husband = 'husband'
+    wife = 'wife'
+    son = 'son'
+    daughter = 'daughter'
+    father = 'father'
+    mother = 'mother'
+    brother = 'brother'
+    sister = 'sister'
+    grandfather = 'grandfather'
+    grandmother = 'grandmother'
+    grandson = 'grandson'
+    granddaughter = 'granddaughter'
+    great_grandfather = 'great_grandfather'
+    great_grandmother = 'great_grandmother'
+    great_grandson = 'great_grandson'
+    great_granddaughter = 'great_granddaughter'
+    father_in_low_m = 'father_in_low_m'
+    father_in_low_f = 'father_in_low_f'
+    mother_in_low_m = 'mother_in_low_m'
+    mother_in_low_f = 'mother_in_low_f'
+    son_in_low = 'son_in_low'
+    daughter_in_low = 'daughter_in_low'
+    uncle = 'uncle'
+    aunt = 'aunt'
+    nephew = 'nephew'
+    niece = 'niece'
+
+
 class Relation(models.Model):
     """
     Родственные связи
     """
     RELATIVES = (
-        ('husband', 'муж'),
-        ('wife', 'жена'),
-        ('son', 'сын'),
-        ('daughter', 'дочь'),
-        ('father', 'отец'),
-        ('mother', 'мать'),
-        ('brother', 'брат'),
-        ('sister', 'сестра'),
-        ('grandfather', 'дедушка'),
-        ('grandmother', 'бабушка'),
-        ('grandson', 'внук'),
-        ('granddaughter', 'внучка'),
-        ('great_grandfather', 'прадедушка'),
-        ('great_grandmother', 'прабабушка'),
-        ('great_grandson', 'правнук'),
-        ('great_granddaughter', 'правнучка'),
-        ('father_in_low_m', 'тесть'),
-        ('father_in_low_f', 'свекр'),
-        ('mother_in_low_m', 'теща'),
-        ('mother_in_low_f', 'свекровь'),
-        ('son_in_low', 'зять'),
-        ('daughter_in_low', 'невестка'),
-        ('uncle', 'дядя'),
-        ('aunt', 'тётя'),
-        ('nephew', 'племянник'),
-        ('niece', 'племянница')
+        (Rel.husband, 'муж'),
+        (Rel.wife, 'жена'),
+        (Rel.son, 'сын'),
+        (Rel.daughter, 'дочь'),
+        (Rel.father, 'отец'),
+        (Rel.mother, 'мать'),
+        (Rel.brother, 'брат'),
+        (Rel.sister, 'сестра'),
+        (Rel.grandfather, 'дедушка'),
+        (Rel.grandmother, 'бабушка'),
+        (Rel.grandson, 'внук'),
+        (Rel.granddaughter, 'внучка'),
+        (Rel.great_grandfather, 'прадедушка'),
+        (Rel.great_grandmother, 'прабабушка'),
+        (Rel.great_grandson, 'правнук'),
+        (Rel.great_granddaughter, 'правнучка'),
+        (Rel.father_in_low_m, 'тесть'),
+        (Rel.father_in_low_f, 'свекр'),
+        (Rel.mother_in_low_m, 'теща'),
+        (Rel.mother_in_low_f, 'свекровь'),
+        (Rel.son_in_low, 'зять'),
+        (Rel.daughter_in_low, 'невестка'),
+        (Rel.uncle, 'дядя'),
+        (Rel.aunt, 'тётя'),
+        (Rel.nephew, 'племянник'),
+        (Rel.niece, 'племянница')
     )
     type = models.CharField(
         max_length=25, choices=RELATIVES, null=False, blank=False,
@@ -367,73 +423,73 @@ class Relation(models.Model):
         super().save()
 
         back_rel_type = None
-        if self.type == 'husband':
-            back_rel_type = 'wife'
-        elif self.type == 'wife':
-            back_rel_type = 'husband'
-        elif self.type in ('son', 'daughter'):
-            if self.person.gender == 'm':
-                back_rel_type = 'father'
+        if self.type == Rel.husband:
+            back_rel_type = Rel.wife
+        elif self.type == Rel.wife:
+            back_rel_type = Rel.husband
+        elif self.type in (Rel.son, Rel.daughter):
+            if self.person.gender == Gender.male:
+                back_rel_type = Rel.father
             else:
-                back_rel_type = 'mother'
-        elif self.type in ('father', 'mother'):
-            if self.person.gender == 'm':
-                back_rel_type = 'son'
+                back_rel_type = Rel.mother
+        elif self.type in (Rel.father, Rel.mother):
+            if self.person.gender == Gender.male:
+                back_rel_type = Rel.son
             else:
-                back_rel_type = 'daughter'
-        elif self.type in ('brother', 'sister'):
-            if self.person.gender == 'm':
-                back_rel_type = 'brother'
+                back_rel_type = Rel.daughter
+        elif self.type in (Rel.brother, Rel.sister):
+            if self.person.gender == Gender.male:
+                back_rel_type = Rel.brother
             else:
-                back_rel_type = 'sister'
-        elif self.type in ('grandfather', 'grandmother'):
-            if self.person.gender == 'm':
-                back_rel_type = 'grandson'
+                back_rel_type = Rel.sister
+        elif self.type in (Rel.grandfather, Rel.grandmother):
+            if self.person.gender == Gender.male:
+                back_rel_type = Rel.grandson
             else:
-                back_rel_type = 'granddaughter'
-        elif self.type in ('grandson', 'granddaughter'):
-            if self.person.gender == 'm':
-                back_rel_type = 'grandfather'
+                back_rel_type = Rel.granddaughter
+        elif self.type in (Rel.grandson, Rel.granddaughter):
+            if self.person.gender == Gender.male:
+                back_rel_type = Rel.grandfather
             else:
-                back_rel_type = 'grandmother'
-        elif self.type in ('great_grandfather', 'great_grandmother'):
-            if self.person.gender == 'm':
-                back_rel_type = 'great_grandson'
+                back_rel_type = Rel.grandmother
+        elif self.type in (Rel.great_grandfather, Rel.great_grandmother):
+            if self.person.gender == Gender.male:
+                back_rel_type = Rel.great_grandson
             else:
-                back_rel_type = 'great_granddaughter'
-        elif self.type in ('great_grandson', 'great_granddaughter'):
-            if self.person.gender == 'm':
-                back_rel_type = 'great_grandfather'
+                back_rel_type = Rel.great_granddaughter
+        elif self.type in (Rel.great_grandson, Rel.great_granddaughter):
+            if self.person.gender == Gender.male:
+                back_rel_type = Rel.great_grandfather
             else:
-                back_rel_type = 'great_grandmother'
-        elif self.type in ('father_in_low_m', 'mother_in_low_m'):
-            back_rel_type = 'son_in_low'
-        elif self.type == 'son_in_low':
-            if self.person.gender == 'm':
-                back_rel_type = 'father_in_low_m'
+                back_rel_type = Rel.great_grandmother
+        elif self.type in (Rel.father_in_low_m, Rel.mother_in_low_m):
+            back_rel_type = Rel.son_in_low
+        elif self.type == Rel.son_in_low:
+            if self.person.gender == Gender.male:
+                back_rel_type = Rel.father_in_low_m
             else:
-                back_rel_type = 'mother_in_low_m'
-        elif self.type in ('father_in_low_f', 'mother_in_low_f'):
-            back_rel_type = 'daughter_in_low'
-        elif self.type == 'daughter_in_low':
-            if self.person.gender == 'm':
-                back_rel_type = 'father_in_low_f'
+                back_rel_type = Rel.mother_in_low_m
+        elif self.type in (Rel.father_in_low_f, Rel.mother_in_low_f):
+            back_rel_type = Rel.daughter_in_low
+        elif self.type == Rel.daughter_in_low:
+            if self.person.gender == Gender.male:
+                back_rel_type = Rel.father_in_low_f
             else:
-                back_rel_type = 'mother_in_low_f'
-        elif self.type in ('uncle', 'aunt'):
-            if self.person.gender == 'm':
-                back_rel_type = 'nephew'
+                back_rel_type = Rel.mother_in_low_f
+        elif self.type in (Rel.uncle, Rel.aunt):
+            if self.person.gender == Gender.male:
+                back_rel_type = Rel.nephew
             else:
-                back_rel_type = 'niece'
-        elif self.type in ('nephew', 'niece'):
-            if self.person.gender == 'm':
-                back_rel_type = 'uncle'
+                back_rel_type = Rel.niece
+        elif self.type in (Rel.nephew, Rel.niece):
+            if self.person.gender == Gender.male:
+                back_rel_type = Rel.uncle
             else:
-                back_rel_type = 'aunt'
+                back_rel_type = Rel.aunt
 
         if back_rel_type:
             # Автоматически ставить состояние "в браке"
-            if back_rel_type in ('husband', 'wife'):
+            if back_rel_type in (Rel.husband, Rel.wife):
                 self.person.married = True
                 self.person.save()
                 self.rel.married = True
@@ -685,6 +741,10 @@ class EventType(models.Model):
     name = models.CharField(
         null=False, blank=False, max_length=256,
         verbose_name='Наименование'
+    )
+    confirmation_document = models.ForeignKey(
+        'SignedDocument', on_delete=models.SET_NULL, null=True, blank=True,
+        verbose_name='Подтверждающий документ', related_name='event_types'
     )
 
     def __str__(self):
