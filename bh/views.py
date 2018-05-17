@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.views import generic
@@ -177,6 +179,22 @@ def search(request):
             married = int(form.cleaned_data.get('married'))
             if married <= 1:
                 p = p.filter(married=bool(married))
+
+            current_dt = datetime.now()
+
+            age_older_than = int(form.cleaned_data.get('age_older_than'))
+            p = p.filter(birthday__lt=datetime(
+                current_dt.year-age_older_than,
+                current_dt.month,
+                current_dt.day,
+            ))
+
+            age_younger_than = int(form.cleaned_data.get('age_younger_than'))
+            p = p.filter(birthday__gt=datetime(
+                current_dt.year-age_younger_than,
+                current_dt.month,
+                current_dt.day,
+            ))
 
             in_small_group = int(form.cleaned_data.get('in_small_group'))
             if in_small_group <= 1:
