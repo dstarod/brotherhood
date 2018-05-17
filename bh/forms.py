@@ -51,6 +51,15 @@ class ExtendedSearch(forms.Form):
         choices=((2, 'Не важно'), (0, 'Не в браке'), (1, 'В браке')),
         label='Женат/замужем'
     )
+    age_older_than = forms.ChoiceField(
+        choices=[(n, n) for n in range(100)],
+        label='Возраст, от'
+    )
+    age_younger_than = forms.ChoiceField(
+        choices=[(n, n) for n in range(1, 100)],
+        label='Возраст, до'
+    )
+
     in_small_group = forms.ChoiceField(
         choices=((2, 'Не важно'), (0, 'Посещает'), (1, 'Не посещает')),
         label='Посещение малой группы'
@@ -105,3 +114,5 @@ class ExtendedSearch(forms.Form):
         super(ExtendedSearch, self).__init__(*args, **kwargs)
         self.fields['staff'].choices = Staff.make_choices()
         self.fields['role'].choices = Role.make_choices()
+        self.fields['age_older_than'].initial = 0
+        self.fields['age_younger_than'].initial = 99
