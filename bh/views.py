@@ -183,18 +183,20 @@ def search(request):
             current_dt = datetime.now()
 
             age_older_than = int(form.cleaned_data.get('age_older_than'))
-            p = p.filter(birthday__lt=datetime(
-                current_dt.year-age_older_than,
-                current_dt.month,
-                current_dt.day,
-            ))
+            if age_older_than >= 0:
+                p = p.filter(birthday__lt=datetime(
+                    current_dt.year-age_older_than,
+                    current_dt.month,
+                    current_dt.day,
+                ))
 
             age_younger_than = int(form.cleaned_data.get('age_younger_than'))
-            p = p.filter(birthday__gt=datetime(
-                current_dt.year-age_younger_than,
-                current_dt.month,
-                current_dt.day,
-            ))
+            if age_younger_than >= 0:
+                p = p.filter(birthday__gt=datetime(
+                    current_dt.year-age_younger_than,
+                    current_dt.month,
+                    current_dt.day,
+                ))
 
             in_small_group = int(form.cleaned_data.get('in_small_group'))
             if in_small_group <= 1:
