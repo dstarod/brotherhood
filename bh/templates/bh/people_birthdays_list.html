@@ -1,0 +1,31 @@
+{% extends "bh/main.html" %}
+
+{% block people %}active{% endblock %}
+
+{% block content %}
+    <h3>Дни рождения членов церкви</h3>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">ФИО</th>
+                <th scope="col">День рождения</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for person in people %}
+                <tr>
+                    <td scope="row">
+                        <a href="{% url 'bh:person' pk=person.id %}">
+                            {{ person }}
+                        </a>
+                    </td>
+                    <td>
+                        {{ person.birthday }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

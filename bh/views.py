@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.views import generic
 from django.db.models import Q
+from django.db.models.functions import Extract
 
 from . import models
 from .forms import ExtendedSearch, SimpleSearch
@@ -11,6 +12,25 @@ from .forms import ExtendedSearch, SimpleSearch
 
 def index(request):
     return render(request, template_name='bh/index.html', context={})
+
+
+def people_birthdays_list(request):
+    p = models.Person.objects.filter(
+        gone_to_eternity=False,
+        gone_to_another_church=False,
+        gone=False,
+        member=True,
+        birthday__isnull=False,
+    )
+    return render(
+        request, template_name='bh/people_birthdays_list.html',
+        context={
+            'people': p.order_by(
+                Extract('birthday', 'month'),
+                Extract('birthday', 'day')
+            ),
+        }
+    )
 
 
 def people_list(request):
