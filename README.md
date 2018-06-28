@@ -9,7 +9,7 @@
 
 Установить необходимые пакеты:
 
-    pip3 install -r docker/requirements.txt
+    pip3 install -r requirements.txt
 
 Создать файл `brothrhood/private.py` с приватными настройками, такими как
 

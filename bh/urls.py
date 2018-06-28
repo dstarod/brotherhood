@@ -29,6 +29,8 @@ urlpatterns = [
         login_required(views.address), name='address'),
     url(r'^person/list/$',
         login_required(views.people_list), name='people'),
+    url(r'^person/birthdays/list/$',
+        login_required(views.people_birthdays_list), name='birthdays'),
     url(r'^person/(?P<pk>[0-9]+)/$',
         login_required(views.person), name='person'),
     url(r'^search/$',

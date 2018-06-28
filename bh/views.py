@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.views import generic
 from django.db.models import Q
+from django.db.models.functions import Extract
 
 from . import models
 from .forms import ExtendedSearch, SimpleSearch
@@ -11,6 +12,25 @@ from .forms import ExtendedSearch, SimpleSearch
 
 def index(request):
     return render(request, template_name='bh/index.html', context={})
+
+
+def people_birthdays_list(request):
+    p = models.Person.objects.filter(
+        gone_to_eternity=False,
+        gone_to_another_church=False,
+        gone=False,
+        member=True,
+        birthday__isnull=False,
+    )
+    return render(
+        request, template_name='bh/people_birthdays_list.html',
+        context={
+            'people': p.order_by(
+                Extract('birthday', 'month'),
+                Extract('birthday', 'day')
+            ),
+        }
+    )
 
 
 def people_list(request):
@@ -183,18 +203,20 @@ def search(request):
             current_dt = datetime.now()
 
             age_older_than = int(form.cleaned_data.get('age_older_than'))
-            p = p.filter(birthday__lt=datetime(
-                current_dt.year-age_older_than,
-                current_dt.month,
-                current_dt.day,
-            ))
+            if age_older_than >= 0:
+                p = p.filter(birthday__lt=datetime(
+                    current_dt.year-age_older_than,
+                    current_dt.month,
+                    current_dt.day,
+                ))
 
             age_younger_than = int(form.cleaned_data.get('age_younger_than'))
-            p = p.filter(birthday__gt=datetime(
-                current_dt.year-age_younger_than,
-                current_dt.month,
-                current_dt.day,
-            ))
+            if age_younger_than >= 0:
+                p = p.filter(birthday__gt=datetime(
+                    current_dt.year-age_younger_than,
+                    current_dt.month,
+                    current_dt.day,
+                ))
 
             in_small_group = int(form.cleaned_data.get('in_small_group'))
             if in_small_group <= 1:
