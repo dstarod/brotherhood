@@ -5,7 +5,7 @@ from django.views import static
 
 
 urlpatterns = [
-    url(r'', include('bh.urls', namespace='bh')),
+    url(r'', include(('bh.urls', 'bh'), namespace='bh')),
     url(r'^admin/', admin.site.urls),
 ]
 
