@@ -333,7 +333,8 @@ class Phone(models.Model):
         verbose_name='Тип'
     )
     person = models.ForeignKey(
-        'Person', blank=True, null=True, related_name='phone'
+        'Person', blank=True, null=True, related_name='phone',
+        on_delete=models.CASCADE
     )
 
     def __str__(self):
@@ -527,7 +528,8 @@ class Action(models.Model):
     )
     address = models.ForeignKey(
         'Address', null=True, blank=True, related_name='Активности',
-        verbose_name='Адрес'
+        verbose_name='Адрес',
+        on_delete=models.SET_NULL
     )
     action_type = models.ForeignKey(
         'ActionType', on_delete=models.CASCADE, related_name='actions',
@@ -660,7 +662,8 @@ class Event(models.Model):
     )
     address = models.ForeignKey(
         'Address', null=True, blank=True, related_name='События',
-        verbose_name='Адрес'
+        verbose_name='Адрес',
+        on_delete=models.SET_NULL
     )
     type = models.CharField(
         null=False, default='public', max_length=256, choices=(
